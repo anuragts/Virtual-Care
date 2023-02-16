@@ -13,7 +13,6 @@ const Home = () => {
       </Head>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center mb-8">VirtualCare</h1>
         <p className="text-lg text-gray-400 text-center mb-8">A telemedicine web application that enables patients to receive medical care from anywhere in the world.</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
