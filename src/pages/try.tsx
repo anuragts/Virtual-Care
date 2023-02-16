@@ -83,11 +83,13 @@ const VideoCall = () => {
           const data = change.doc.data() as RTCIceCandidateType;
           if (peerConnection.current) {
             if (peerConnection.current.currentRemoteDescription) {
-            await peerConnection.current.addIceCandidate(
-              new RTCIceCandidate(data)
-            );
-            } else{
-                console.warn('Cannot add ICE candidate. Remote description is not set yet.');
+              await peerConnection.current.addIceCandidate(
+                new RTCIceCandidate(data)
+              );
+            } else {
+              console.warn(
+                "Cannot add ICE candidate. Remote description is not set yet."
+              );
             }
           }
         }
@@ -153,30 +155,49 @@ const VideoCall = () => {
 
   return (
     <div>
-      <div>
-        <video
-          autoPlay
-          ref={(video) => video && (video.srcObject = localStream)}
-        />
+      <div className="flex justify-center mt-10">
+        <div className="mx-10">
+          <video
+            autoPlay
+            ref={(video) => video && (video.srcObject = localStream)}
+          />
+        </div>
+        <div className="mx-10">
+          <video
+            autoPlay
+            ref={(video) => video && (video.srcObject = remoteStream)}
+          />
+        </div>
       </div>
-      <div>
-        <video
-          autoPlay
-          ref={(video) => video && (video.srcObject = remoteStream)}
-        />
-      </div>
-      <div>
-        {roomId ? null : <button onClick={startCall}>Start Call</button>}
+
+      <div className="text-center">
+        {roomId ? null : (
+          <button
+            className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+            onClick={startCall}
+          >
+            Start Call
+          </button>
+        )}{" "}
+        <br />
+        {roomId ? <div>Room ID - {roomId}</div> : null}
+        {remoteStream || localStream ? null : (
+          <button
+            className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+            onClick={joinCall}
+          >
+            Join Call
+          </button>
+        )}
         {roomId ? null : (
           <input
+            className="py-3 px-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
             onChange={(e) => {
               setRoomId(e.target.value);
               joinCall;
             }}
           />
-        )}{" "}
-         {roomId ?  <div>Room ID - {roomId}</div> : null}
-        {remoteStream || localStream ? null :  <button onClick={joinCall}>Join Call</button> }
+        )}
       </div>
     </div>
   );
