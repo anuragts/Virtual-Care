@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "firebase/compat/firestore";
 import firebase from "firebase/compat/app";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAeu1lrM7kbskxHrIr1-9E29EUctAu4QK4",
@@ -32,9 +34,10 @@ type RTCSessionDescriptionType = {
 const VideoCall = () => {
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
-  const [roomId, setRoomId] = useState("");
-  const [isOfferer, setIsOfferer] = useState(false);
+  const [roomId, setRoomId] = useState<string>("");
+  const [isOfferer, setIsOfferer] = useState<boolean>(false);
   const peerConnection = useRef<RTCPeerConnection | null>(null);
+  const { user, error, isLoading } = useUser();
 
   const startCall = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -154,52 +157,71 @@ const VideoCall = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-center mt-10">
-        <div className="mx-10">
-          <video
-            autoPlay
-            ref={(video) => video && (video.srcObject = localStream)}
-          />
-        </div>
-        <div className="mx-10">
-          <video
-            autoPlay
-            ref={(video) => video && (video.srcObject = remoteStream)}
-          />
-        </div>
-      </div>
+    <>
+      <div>
+        {!user && (
+          <div>
+            <div className="grid h-screen place-items-center">
+              <Link
+                href={"/api/auth/login"}
+                className="bg-green-400 border-2 border-green-400 text-black  hover:bg-black hover:text-green-400   font-bold py-2 px-4 rounded-full shadow-lg focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Sign In with Auth0
+              </Link>
+            </div>
+          </div>
+        )}
+        {user && (
+          <div>
+            <div className="flex justify-center mt-10">
+              <div className="mx-10">
+                <video
+                  autoPlay
+                  ref={(video) => video && (video.srcObject = localStream)}
+                />
+              </div>
+              <div className="mx-10">
+                <video
+                  autoPlay
+                  ref={(video) => video && (video.srcObject = remoteStream)}
+                />
+              </div>
+            </div>
 
-      <div className="text-center">
-        {roomId ? null : (
-          <button
-            className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
-            onClick={startCall}
-          >
-            Start Call
-          </button>
-        )}{" "}
-        <br />
-        {roomId ? <div>Room ID - {roomId}</div> : null}
-        {remoteStream || localStream ? null : (
-          <button
-            className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
-            onClick={joinCall}
-          >
-            Join Call
-          </button>
-        )}
-        {roomId ? null : (
-          <input
-            className="py-3 px-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-            onChange={(e) => {
-              setRoomId(e.target.value);
-              joinCall;
-            }}
-          />
+            <div className="text-center">
+              {roomId ? null : (
+                <button
+                  className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+                  onClick={startCall}
+                >
+                  Start Call
+                </button>
+              )}{" "}
+              <br />
+              {roomId ? <div>Room ID - {roomId}</div> : null}
+              {remoteStream || localStream ? null : (
+                <button
+                  className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+                  onClick={joinCall}
+                >
+                  Join Call
+                </button>
+              )}
+              {roomId ? null : (
+                <input
+                  className="py-3 px-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                  onChange={(e) => {
+                    setRoomId(e.target.value);
+                    joinCall;
+                  }}
+                />
+              )}
+            </div>
+          </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 
