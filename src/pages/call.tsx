@@ -14,14 +14,9 @@ export default () => {
   };
 
   //   Global State
-  const pc = new RTCPeerConnection(servers);
+  //   const pc = new RTCPeerConnection(servers);
   let localStream = null;
   let remoteStream = null;
-
-  const webcamButton = document.getElementById("webcamButton");
-
- 
-
 
   return (
     <>
