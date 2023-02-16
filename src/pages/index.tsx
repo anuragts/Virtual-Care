@@ -29,7 +29,7 @@ const Home = () => {
           </div>
         </div>
         <div className='text-center mx-5 my-20'>
-          <Link href={"/try"} className='text-2xl font-bold text-black py-3 px-10 rounded-full bg-green-400  '>Try Now</Link>
+          <Link href={"/try"} className='text-2xl font-bold text-[#121212] py-3 px-10 rounded-full border-green-400 border-2 bg-green-400 hover:bg-[#121212] hover:text-green-400 '>Try Now</Link>
         </div>
       </main>
     </div>

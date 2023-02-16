@@ -164,7 +164,7 @@ const VideoCall = () => {
             <div className="grid h-screen place-items-center">
               <Link
                 href={"/api/auth/login"}
-                className="bg-green-400 border-2 border-green-400 text-black  hover:bg-black hover:text-green-400   font-bold py-2 px-4 rounded-full shadow-lg focus:outline-none focus:shadow-outline"
+                className="bg-green-400 border-2 border-green-400 text-[#121212] hover:bg-[#121212] hover:text-green-400   font-bold py-2 px-4 rounded-full shadow-lg focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Sign In with Auth0
@@ -192,7 +192,7 @@ const VideoCall = () => {
             <div className="text-center">
               {roomId ? null : (
                 <button
-                  className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+                  className="text-2xl text-[#121212] font-semibold py-3 px-10 rounded-full border-2 border-green-400 hover:bg-[#121212] hover:text-green-400 bg-green-400 mx-5 my-10"
                   onClick={startCall}
                 >
                   Start Call
@@ -202,20 +202,23 @@ const VideoCall = () => {
               {roomId ? <div>Room ID - {roomId}</div> : null}
               {remoteStream || localStream ? null : (
                 <button
-                  className="text-2xl text-black py-3 px-10 rounded-full bg-green-400 mx-5 my-10"
+                  className="text-2xl text-[#121212] py-3 px-10 font-semibold rounded-full border-2 border-green-400 hover:bg-[#121212] hover:text-green-400 bg-green-400 mx-5 my-10"
                   onClick={joinCall}
                 >
                   Join Call
                 </button>
               )}
               {roomId ? null : (
+                <div>
+                    <div className="my-5 text-xl">Room ID </div>
                 <input
                   className="py-3 px-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
                   onChange={(e) => {
-                    setRoomId(e.target.value);
-                    joinCall;
-                  }}
-                />
+                      setRoomId(e.target.value);
+                      joinCall;
+                    }}
+                    />
+                    </div>
               )}
             </div>
           </div>
